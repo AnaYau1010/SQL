@@ -1,0 +1,81 @@
+SELECT *
+FROM information_schema.tables
+
+SELECT table_name, column_name, data_type
+FROM information_schema.columns
+ORDER BY table_name
+
+SELECT *
+FROM crime_scene_report
+WHERE date = '20180115'
+AND type = 'murder'
+AND city = 'SQL City'
+
+#index	date	type	description	city
+0	20180115	murder	Security footage shows that there were 2 witnesses. 
+The first witness lives at the last house on "Northwestern Dr". The second witness, named Annabel, lives somewhere on "Franklin Ave".	SQL City
+
+SELECT *
+FROM person
+WHERE address_street_name = 'Northwestern Dr'
+ORDER BY address_number DESC
+
+#Morty Schapiro is not the murderer
+14887	Morty Schapiro	118009	4919	Northwestern Dr	111564949
+
+SELECT *
+FROM person
+WHERE address_street_name = 'Franklin Ave'
+ORDER BY name
+
+#Annabel Miller not the murderer
+1	16371	Annabel Miller	490173	103	Franklin Ave	318771143
+
+SELECT *
+FROM interview
+WHERE person_id IN (14887, 16371)
+
+#14887	I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. The membership number on the bag started with "48Z". 
+Only gold members have those bags. The man got into a car with a plate that included "H42W".
+# 16371	I saw the murder happen, and I recognized the killer from my gym when I was working out last week on January the 9th.
+
+SELECT *
+FROM get_fit_now_member
+WHERE id LIKE '%48Z%'
+and membership_status = 'gold'
+
+#48Z7A	28819	Joe Germuska	20160305	gold
+ 48Z55	67318	Jeremy Bowers	20160101	gold
+
+SELECT *
+FROM get_fit_now_check_in
+WHERE check_in_date = 20180109
+AND membership_id IN ('48Z7A','48Z55')
+
+# membership_id	check_in_date	check_in_time	check_out_time
+ 48Z7A	20180109	1600	1730
+ 48Z55	20180109	1530	1700
+
+SELECT *
+FROM drivers_license
+WHERE plate_number LIKE '%H42W%'
+and gender = 'male'
+
+#id	age	height	eye_color	hair_color	gender	plate_number	car_make	car_model
+423327	30	70	brown	brown	male	0H42W2	Chevrolet	Spark LS
+664760	21	71	black	black	male	4H42WR	Nissan	Altima
+
+SELECT *
+FROM person
+WHERE name = 'Joe Germuska'
+#Joe is not the murderer
+
+SELECT *
+FROM person
+WHERE license_id = 423327
+
+Jeremy Bowers is the MURDERER!!! Joins wouldve made this easier.
+
+
+
+
